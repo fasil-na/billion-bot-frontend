@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Plus, Activity, Power, Trash2, Edit2, X } from 'lucide-react';
+import { API_BASE_URL } from '../config/constants';
 
 const STATIC_INSTRUMENTS = {
   'B-BTC_USDT': { maxLeverage: 20, qtyStep: 0.001, priceStep: 0.1, minNotional: 6 },
@@ -35,7 +36,7 @@ const Configuration = () => {
 
   const fetchConfigs = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/configs');
+      const response = await fetch(`${API_BASE_URL}/configs`);
       if (response.ok) {
         const data = await response.json();
         setConfigs(data);
@@ -67,8 +68,8 @@ const Configuration = () => {
       };
 
       const url = editingId 
-        ? `http://localhost:5000/api/configs/${editingId}`
-        : 'http://localhost:5000/api/configs';
+        ? `${API_BASE_URL}/configs/${editingId}`
+        : `${API_BASE_URL}/configs`;
         
       const method = editingId ? 'PUT' : 'POST';
 
@@ -112,7 +113,7 @@ const Configuration = () => {
     if (!window.confirm('Are you sure you want to delete this configuration?')) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/configs/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/configs/${id}`, {
         method: 'DELETE'
       });
       
