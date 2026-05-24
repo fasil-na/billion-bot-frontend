@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Play, TrendingUp, BarChart2, Activity, Calendar, DollarSign, RefreshCw } from 'lucide-react';
+import { API_BASE_URL } from '../config/constants';
 
 const Backtest = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const Backtest = () => {
         riskAmount: formData.riskAmount
       };
 
-      const response = await axios.post('http://localhost:5000/api/market/backtest', payload);
+      const response = await axios.post(`${API_BASE_URL}/market/backtest`, payload);
       setResults(response.data);
 
     } catch (err) {
