@@ -97,14 +97,30 @@ const LiveTrades = () => {
                         {trade.direction === 'buy' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                         {trade.direction.toUpperCase()}
                       </div>
-                      <div className="text-xs text-slate-500 mt-1">{trade.qty} QTY | {trade.leverage}x</div>
+                      <div className="text-xs text-slate-500 mt-1">{trade.units || trade.qty} QTY | {trade.leverage}x</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-white">${trade.entryPrice?.toFixed(4) || '-'}</div>
+                      <div className="text-white" title={trade.actualEntryPrice ? "Actual Exchange Entry" : "App Calculated Entry"}>
+                        ${(trade.actualEntryPrice || trade.entryPrice)?.toFixed(4) || '-'}
+                      </div>
                       <div className="text-xs text-slate-500">{formatDate(trade.entryTime)}</div>
+                      <div className="text-xs mt-1.5 space-y-0.5 font-mono">
+                        {trade.sl && (
+                          <div className="text-rose-400/80">
+                            SL: {trade.actualSl || trade.sl} <span className="text-rose-500/60 ml-1">({Math.abs((trade.actualEntryPrice || trade.entryPrice) - (trade.actualSl || trade.sl)).toFixed(2)} pts)</span>
+                          </div>
+                        )}
+                        {trade.tp && (
+                          <div className="text-emerald-400/80">
+                            TP: {trade.actualTp || trade.tp} <span className="text-emerald-500/60 ml-1">({Math.abs((trade.actualTp || trade.tp) - (trade.actualEntryPrice || trade.entryPrice)).toFixed(2)} pts)</span>
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-white">{trade.exitPrice ? `$${trade.exitPrice.toFixed(4)}` : '-'}</div>
+                      <div className="text-white">
+                        {(trade.actualExitPrice || trade.exitPrice) ? `$${(trade.actualExitPrice || trade.exitPrice).toFixed(4)}` : '-'}
+                      </div>
                       <div className="text-xs text-slate-500">{trade.exitTime ? formatDate(trade.exitTime) : '-'}</div>
                     </td>
                     <td className="px-6 py-4">

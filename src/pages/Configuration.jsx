@@ -213,8 +213,8 @@ const Configuration = () => {
                   name="riskAmount"
                   value={formData.riskAmount}
                   onChange={handleInputChange}
-                  min="0.1"
-                  step="0.1"
+                 
+                 
                   className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                   required
                 />
