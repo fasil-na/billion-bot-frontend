@@ -194,13 +194,7 @@ const Backtest = () => {
             {results && (
               <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl border border-slate-700/50 p-5">
-                    <p className="text-slate-400 text-sm font-medium mb-1">Real Trades PnL</p>
-                    <p className={`text-2xl font-bold ${results.dailyPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      ${(results.dailyPnl || 0).toFixed(2)}
-                    </p>
-                  </div>
+                <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl border border-slate-700/50 p-5">
                     <p className="text-slate-400 text-sm font-medium mb-1">Simulated Daily PnL</p>
                     <p className={`text-2xl font-bold ${results.simulatedTrades?.reduce((a, t) => a + (t.profit || 0), 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -208,16 +202,18 @@ const Backtest = () => {
                     </p>
                   </div>
                   <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl border border-slate-700/50 p-5">
-                    <p className="text-slate-400 text-sm font-medium mb-1">Real Executed Trades</p>
-                    <p className="text-2xl font-bold mt-2 text-indigo-400">
-                      {results.tradesCount || 0}
-                    </p>
-                  </div>
-                  <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl border border-slate-700/50 p-5">
                     <p className="text-slate-400 text-sm font-medium mb-1">Win Rate</p>
                     <p className="text-2xl font-bold mt-2 text-indigo-400">
-                      {results.simulatedTrades ? results.simulatedTrades.length : 0}
+                      {results.simulatedTrades && results.simulatedTrades.length > 0
+                        ? `${((results.simulatedTrades.filter(t => (t.profit || t.pnl) > 0).length / results.simulatedTrades.length) * 100).toFixed(1)}%`
+                        : '0%'}
                     </p>
+                    {results.simulatedTrades && results.simulatedTrades.length > 0 && (
+                      <p className="text-xs text-slate-400 mt-1">
+                        <span className="text-emerald-400">{results.simulatedTrades.filter(t => (t.profit || t.pnl) > 0).length}W</span> / 
+                        <span className="text-rose-400 ml-1">{results.simulatedTrades.filter(t => (t.profit || t.pnl) <= 0).length}L</span>
+                      </p>
+                    )}
                   </div>
                 </div>
 
