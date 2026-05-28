@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import Backtest from './pages/Backtest';
 import Configuration from './pages/Configuration';
 import LiveTrades from './pages/LiveTrades';
+import Logs from './pages/Logs';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path="/backtest" element={<Backtest />} />
             <Route path="/config" element={<Configuration />} />
             <Route path="/live-trades" element={<LiveTrades />} />
+            <Route path="/logs" element={<Logs />} />
           </Routes>
         </div>
       </div>
