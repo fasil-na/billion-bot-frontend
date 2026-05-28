@@ -29,7 +29,7 @@ const Logs = () => {
     if (!window.confirm('Are you sure you want to delete all system logs? This cannot be undone.')) return;
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5001/api/logs`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/logs`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to clear logs');
       setLogs([]);
       setTotalPages(1);
