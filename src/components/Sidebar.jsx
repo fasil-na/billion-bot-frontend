@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, LineChart, Settings, X, Activity } from 'lucide-react';
+import { LayoutDashboard, LineChart, Settings, X, Activity, FileText } from 'lucide-react';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -10,6 +10,7 @@ const Sidebar = ({ onClose }) => {
     { name: 'Backtest', path: '/backtest', icon: LineChart },
     { name: 'Configuration', path: '/config', icon: Settings },
     { name: 'Live Trades', path: '/live-trades', icon: Activity },
+    { name: 'System Logs', path: '/logs', icon: FileText },
   ];
 
   return (
