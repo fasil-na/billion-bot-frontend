@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, Clock, Server, Info, Search, Trash2 } from 'lucide-react';
+import { API_BASE_URL } from '../config/constants';
 
 const Logs = () => {
   const [logs, setLogs] = useState([]);
@@ -11,7 +12,7 @@ const Logs = () => {
   const fetchLogs = async (pageNum) => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5001/api/logs?page=${pageNum}&limit=50`);
+      const res = await fetch(`${API_BASE_URL}/logs?page=${pageNum}&limit=50`);
       if (!res.ok) throw new Error('Failed to fetch logs');
       const data = await res.json();
       setLogs(data.logs);
@@ -46,7 +47,7 @@ const Logs = () => {
   }, []);
 
   const getLevelColor = (level) => {
-    switch(level?.toLowerCase()) {
+    switch (level?.toLowerCase()) {
       case 'error': return 'text-red-400 bg-red-400/10 border-red-400/20';
       case 'warning': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
       case 'info': return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
@@ -67,14 +68,14 @@ const Logs = () => {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={clearAllLogs}
               className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors border border-red-500/20 flex items-center gap-2"
             >
               <Trash2 className="w-4 h-4" />
               <span className="hidden sm:inline">Clear Logs</span>
             </button>
-            <button 
+            <button
               onClick={() => fetchLogs(page)}
               className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-700"
             >
@@ -137,9 +138,9 @@ const Logs = () => {
                       </td>
                       <td className="px-6 py-4 text-slate-400 text-xs">
                         {log.data ? (
-                           <div className="max-w-[200px] truncate" title={JSON.stringify(log.data)}>
-                             {JSON.stringify(log.data)}
-                           </div>
+                          <div className="max-w-[200px] truncate" title={JSON.stringify(log.data)}>
+                            {JSON.stringify(log.data)}
+                          </div>
                         ) : '-'}
                       </td>
                     </tr>
@@ -148,10 +149,10 @@ const Logs = () => {
               </tbody>
             </table>
           </div>
-          
+
           {totalPages > 1 && (
             <div className="p-4 border-t border-slate-700 flex items-center justify-between bg-slate-900/30">
-              <button 
+              <button
                 disabled={page === 1}
                 onClick={() => fetchLogs(page - 1)}
                 className="px-4 py-2 bg-slate-800 disabled:opacity-50 text-white rounded-lg text-sm transition-colors hover:bg-slate-700"
@@ -161,7 +162,7 @@ const Logs = () => {
               <span className="text-slate-400 text-sm">
                 Page {page} of {totalPages}
               </span>
-              <button 
+              <button
                 disabled={page === totalPages}
                 onClick={() => fetchLogs(page + 1)}
                 className="px-4 py-2 bg-slate-800 disabled:opacity-50 text-white rounded-lg text-sm transition-colors hover:bg-slate-700"
