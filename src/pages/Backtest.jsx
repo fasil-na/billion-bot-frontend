@@ -255,6 +255,55 @@ const Backtest = () => {
                     )}
                   </div>
                 </div>
+
+                {/* Formed FVGs Panel */}
+                {results.indicators && results.indicators.fvgs && (
+                  <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl border border-slate-700/50 p-6 shadow-xl overflow-hidden flex flex-col mt-6">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-indigo-400" />
+                      All Formed FVGs ({results.indicators.fvgs.length})
+                    </h3>
+                    
+                    <div className="flex-1 overflow-y-auto custom-scrollbar max-h-[300px]">
+                      {results.indicators.fvgs.length === 0 ? (
+                        <div className="py-4 text-center text-slate-500">
+                          No FVGs were formed during this period.
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {[...results.indicators.fvgs].sort((a,b) => new Date(b.endTime).getTime() - new Date(a.endTime).getTime()).map((fvg, idx) => {
+                            const midpoint = (fvg.top + fvg.bottom) / 2;
+                            return (
+                              <div key={idx} className={`border rounded-xl p-4 flex items-center justify-between transition-colors ${fvg.filled ? 'bg-slate-900/30 border-slate-800/50 opacity-70' : 'bg-slate-900/80 border-slate-600 shadow-md hover:bg-slate-800'}`}>
+                                <div className="flex items-center gap-4">
+                                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${fvg.direction === 'bullish' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                                    {fvg.direction === 'bullish' ? 'B' : 'S'}
+                                  </div>
+                                  <div>
+                                    <div className="flex items-center gap-2">
+                                        <p className="font-semibold">{fvg.direction === 'bullish' ? 'BULLISH FVG' : 'BEARISH FVG'}</p>
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${fvg.filled ? 'bg-slate-800 text-slate-400' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
+                                            {fvg.filled ? 'CANCELLED / TRADED' : 'ACTIVELY WAITING'}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-slate-400 mt-1">Formed: {new Date(fvg.endTime).toLocaleString()}</p>
+                                    {fvg.filled && fvg.filledAt && (
+                                        <p className="text-[10px] text-slate-500">Ended: {new Date(fvg.filledAt).toLocaleString()}</p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-sm font-medium text-slate-200">Midpoint: <span className="text-indigo-400 font-bold">${midpoint.toFixed(4)}</span></p>
+                                  <p className="text-xs text-slate-400 mt-1">Range: {fvg.bottom.toFixed(2)} - {fvg.top.toFixed(2)}</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
