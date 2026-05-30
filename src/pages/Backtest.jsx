@@ -283,7 +283,7 @@ const Backtest = () => {
                                     <div className="flex items-center gap-2">
                                         <p className="font-semibold">{fvg.direction === 'bullish' ? 'BULLISH FVG' : 'BEARISH FVG'}</p>
                                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${fvg.filled ? 'bg-slate-800 text-slate-400' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
-                                            {fvg.filled ? 'CANCELLED / TRADED' : 'ACTIVELY WAITING'}
+                                            {fvg.status === 'trade_executed' ? 'TRADE EXECUTED' : fvg.status === 'cancelled' ? 'CANCELLED' : fvg.status === 'skipped' ? 'SKIPPED (RISK LIMIT)' : 'ACTIVELY WAITING'}
                                         </span>
                                     </div>
                                     <p className="text-xs text-slate-400 mt-1">Formed: {new Date(fvg.endTime).toLocaleString()}</p>
