@@ -288,13 +288,13 @@ const Backtest = () => {
                                                 : fvg.status === 'trade_executed'
                                                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                                                     : (fvg.status === 'skipped' || fvg.rejectReason)
-                                                        ? 'bg-slate-800 text-slate-400 border border-slate-700/50'
+                                                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
                                                         : 'bg-rose-500/20 text-rose-400 border border-rose-500/30' // Expired in red
                                         }`}>
                                             {!fvg.filled ? 'ACTIVELY WAITING' : 
                                               fvg.status === 'trade_executed' ? 'TRADE EXECUTED' : 
                                               fvg.status === 'cancelled' ? 'CANCELLED' : 
-                                              (fvg.status === 'skipped' || fvg.rejectReason) ? `SKIPPED (${fvg.rejectReason || 'RISK LIMIT'})` : 
+                                              (fvg.status === 'skipped' || fvg.rejectReason) ? `REJECTED (${fvg.rejectReason || 'RISK LIMIT'})` : 
                                               'EXPIRED'}
                                         </span>
                                     </div>
