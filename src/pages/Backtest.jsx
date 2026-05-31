@@ -282,8 +282,20 @@ const Backtest = () => {
                                   <div>
                                     <div className="flex items-center gap-2">
                                         <p className="font-semibold">{fvg.direction === 'bullish' ? 'BULLISH FVG' : 'BEARISH FVG'}</p>
-                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${fvg.filled ? 'bg-slate-800 text-slate-400' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}`}>
-                                            {fvg.status === 'trade_executed' ? 'TRADE EXECUTED' : fvg.status === 'cancelled' ? 'CANCELLED' : fvg.status === 'skipped' ? 'SKIPPED (RISK LIMIT)' : 'ACTIVELY WAITING'}
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${
+                                            !fvg.filled 
+                                                ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/50 shadow-[0_0_8px_rgba(99,102,241,0.6)] animate-pulse' // Highlight Active
+                                                : fvg.status === 'trade_executed'
+                                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                                    : (fvg.status === 'skipped' || fvg.rejectReason)
+                                                        ? 'bg-slate-800 text-slate-400 border border-slate-700/50'
+                                                        : 'bg-rose-500/20 text-rose-400 border border-rose-500/30' // Expired in red
+                                        }`}>
+                                            {!fvg.filled ? 'ACTIVELY WAITING' : 
+                                              fvg.status === 'trade_executed' ? 'TRADE EXECUTED' : 
+                                              fvg.status === 'cancelled' ? 'CANCELLED' : 
+                                              (fvg.status === 'skipped' || fvg.rejectReason) ? `SKIPPED (${fvg.rejectReason || 'RISK LIMIT'})` : 
+                                              'EXPIRED'}
                                         </span>
                                     </div>
                                     <p className="text-xs text-slate-400 mt-1">Formed: {new Date(fvg.endTime).toLocaleString()}</p>
