@@ -7,6 +7,7 @@ import { API_BASE_URL, SOCKET_URL } from '../config/constants';
 const LiveTrades = () => {
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
     fetchTrades();
@@ -53,12 +54,28 @@ const LiveTrades = () => {
     return new Date(dateString).toLocaleString();
   };
 
+  const filteredTrades = trades.filter(trade => {
+    if (filterStatus === 'all') return true;
+    return trade.status === filterStatus;
+  });
+
   return (
     <div className="p-4 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto w-full">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Live Trades</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Live Trades <span className="text-sm font-normal text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-full ml-2">{filteredTrades.length}</span></h1>
           <p className="text-slate-400 text-sm md:text-base">Monitor real-time automated trade executions.</p>
+        </div>
+        <div className="flex items-center gap-2 bg-slate-800/50 p-1 rounded-lg border border-slate-700/50 overflow-x-auto">
+          {['all', 'open', 'pending', 'closed', 'cancelled'].map(status => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium capitalize whitespace-nowrap transition-colors ${filterStatus === status ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-700/50'}`}
+            >
+              {status}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -70,6 +87,11 @@ const LiveTrades = () => {
             <Activity className="w-12 h-12 mb-3 opacity-20" />
             <p>No live trades found</p>
             <p className="text-sm mt-1">Enable auto-trade in your configurations to start trading.</p>
+          </div>
+        ) : filteredTrades.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-64 text-slate-400 bg-slate-900/30">
+            <Activity className="w-12 h-12 mb-3 opacity-20" />
+            <p>No {filterStatus} trades found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -85,7 +107,7 @@ const LiveTrades = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700/50">
-                {trades.map((trade) => (
+                {filteredTrades.map((trade) => (
                   <tr key={trade._id} className="hover:bg-slate-800/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-medium text-white">{trade.pair}</div>
