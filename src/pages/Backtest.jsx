@@ -302,10 +302,19 @@ const Backtest = () => {
                             </div>
                             <div className="text-right">
                               <p className="text-sm font-medium text-slate-200">Entry: ${trade.entryPrice ? trade.entryPrice.toFixed(4) : trade.price.toFixed(4)}</p>
-                              <p className="text-sm font-medium text-slate-400">Exit: ${trade.exitPrice?.toFixed(4)}</p>
-                              <p className={`text-sm font-semibold mt-1 ${(trade.profit || trade.pnl) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                {(trade.profit || trade.pnl) >= 0 ? '+' : ''}{(trade.profit || trade.pnl).toFixed(2)} USDT
+                              {(trade.tp || trade.sl) && (
+                                <div className="flex justify-end gap-2 mt-0.5 text-[10px]">
+                                  {trade.tp && <span className="text-emerald-400/80">TP: {trade.tp.toFixed(4)}</span>}
+                                  {trade.sl && <span className="text-rose-400/80">SL: {trade.sl.toFixed(4)}</span>}
+                                </div>
+                              )}
+                              <p className="text-sm font-medium text-slate-400 mt-0.5">Exit: ${trade.exitPrice?.toFixed(4)}</p>
+                              <p className={`text-sm font-semibold mt-1 ${(trade.profit ?? trade.pnl ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                {(trade.profit ?? trade.pnl ?? 0) >= 0 ? '+' : ''}{(trade.profit ?? trade.pnl ?? 0).toFixed(2)} USDT
                               </p>
+                              {trade.reason && (
+                                <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{trade.reason}</p>
+                              )}
                             </div>
                           </div>
                         ))}
